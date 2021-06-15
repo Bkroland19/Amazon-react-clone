@@ -1,16 +1,26 @@
+import { signIn, signOut, useSession } from "next-auth/client";
+import { selectItems } from "../slices/basketSlice";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import {
   MenuIcon,
   SearchIcon,
   ShoppingCartIcon,
 } from "@heroicons/react/outline";
+import { useSelector } from "react-redux";
+
 function Header() {
+  const [session] = useSession();
+  const router = useRouter();
+  const items = useSelector(selectItems);
+
   return (
     <header>
       {/**top nav */}
       <div className="flex items-center bg-amazon_blue p-1 flex-grow py-2">
         <div className="mt-2 flex items-center flex-grow sm:flex-grow-0">
           <Image
+            onClick={() => router.push("/")}
             src="https://greatescapepublishing.com/reports/images/bigstock.png"
             width="150"
             height="40"
@@ -28,17 +38,28 @@ function Header() {
         </div>
         {/**Right section */}
         <div className="text-white flex items-center text-xs space-x-5 mx-6 whitespace-nowrap">
-          <div className="cursor-pointer hover:underline">
-            <p className="font-extrabold md:text-sm">Hello Roland</p>
+          <div
+            className="cursor-pointer hover:underline"
+            onClick={!session ? signIn : signOut}
+          >
+            {/**={!session ? signIn : signOut}
+          >    if no session i wanna sign in and if there is session i wanna sihnout */}
+            <p className="font-extrabold md:text-sm">
+              {/**if there is a session  lets get the user name otherwise sign in */}
+              {session ? `Hello ,${session.user.name}` : signIn}
+            </p>
             <p className="font-extrabold md:text-sm">Account & Lists</p>
           </div>
           <div className="cursor-pointer hover:underline">
             <p className="font-extrabold md:text-sm">Returns</p>
             <p className="font-extrabold md:text-sm">& Orders</p>
           </div>
-          <div className=" relative flex items-center cursor-pointer hover:underline">
+          <div
+            onClick={() => router.push("/checkout")}
+            className=" relative flex items-center cursor-pointer hover:underline"
+          >
             <span className="absolute top-0 right-0 text-black bg-yellow-400 rounded-full h-4 w-4  text-center font-extrabold">
-              0
+              {items.length}
             </span>
             <ShoppingCartIcon className="h-10" />
             <p className="font-extrabold md:text-sm">Basket</p>

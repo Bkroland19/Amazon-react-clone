@@ -2,9 +2,11 @@ import Head from "next/head";
 import Banner from "../components/Banner";
 import Header from "../components/Header";
 import ProductFeed from "../components/ProductFeed";
+import { useSession } from "next-auth/client";
 
 //then here we can destructure props = {products}
 export default function Home({ products }) {
+  const [session] = useSession();
   return (
     <div className="bg-gray-100">
       <Head>
