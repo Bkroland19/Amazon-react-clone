@@ -1,9 +1,11 @@
-import Image from "next/image";
-import { useState } from "react";
+import { addToBasket } from "../slices/basketSlice";
 import { StarIcon } from "@heroicons/react/solid";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Currency from "react-currency-formatter";
 import { useDispatch } from "react-redux";
-import { addToBasket } from "../slices/basketSlice";
+import { useState } from "react";
+import Image from "next/image";
 
 const MAX_RATING = 5;
 const MIN_RATING = 1;
@@ -12,6 +14,17 @@ function Product({ id, price, title, description, image, category }) {
   const [rating] = useState(
     Math.floor(Math.random() * (MAX_RATING - MIN_RATING + 1)) + MIN_RATING
   );
+  const notify = () => {
+    toast.success("Added to cart!", {
+      position: "top-right",
+      autoClose: 1200,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
 
   const [hasPrime] = useState(Math.random() < 0.5);
   const addItemToBasket = () => {
@@ -55,11 +68,16 @@ function Product({ id, price, title, description, image, category }) {
         </div>
       )}
       <button
-        onClick={addItemToBasket}
-        className="mt-auto text-xs md:text-sm  bg-gradient-to-b from-yellow-200 to-bg-yellow-400 border border-yellow-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 active:from-yellow-500"
+        onClick={() => {
+          addItemToBasket();
+          notify();
+        }}
+        className="mt-auto button"
       >
-        Add to Basket
+        Add to basket
       </button>
+
+      <ToastContainer />
     </div>
   );
 }

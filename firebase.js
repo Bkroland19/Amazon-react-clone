@@ -7,5 +7,10 @@ const firebaseConfig = {
   storageBucket: "amzon-12.appspot.com",
   messagingSenderId: "496171443977",
   appId: "1:496171443977:web:d4037816c94a3f586615d8",
-  measurementId: "G-0SX2BFVWWL",
 };
+
+const app = !firebase.apps.length
+  ? firebase.initializeApp(firebaseConfig)
+  : firebase.app();
+
+export const db = app.firestore();

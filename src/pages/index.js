@@ -3,6 +3,7 @@ import Banner from "../components/Banner";
 import Header from "../components/Header";
 import ProductFeed from "../components/ProductFeed";
 import { useSession } from "next-auth/client";
+import Footer from "../components/Footer";
 
 //then here we can destructure props = {products}
 export default function Home({ products }) {
@@ -22,6 +23,9 @@ export default function Home({ products }) {
 
         {/* ----Products feed ---- */}
         <ProductFeed products={products} />
+
+        {/**Footer */}
+        <Footer />
       </main>
 
       {/* ---- ---- */}
